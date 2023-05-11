@@ -1,5 +1,5 @@
 #background {
-    height: 725px; background-color:#457b9d ;
+    height: 725px; background-color:#7a459d ;
 }
 
 body {
@@ -26,4 +26,17 @@ footer p a:hover {
 }   
 .icon {
     width: 80px;
+}
+
+footer a{background-color:#e63946;
+
+
+}
+.msg h2{background-color:#457b9d ;
+
+}
+
+
+
+.msg p{background-color: #a8dadc; 
 }
