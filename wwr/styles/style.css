@@ -26,7 +26,7 @@ nav a {
 }
 
 h4{   
-    background-color: black;
+    background-color:#396E94 ;
     color: #d9c2a3;
 
 }
@@ -39,18 +39,18 @@ h4{
 
 .button-box
 {text-align: center;  
-    background-color: black;
+    background-color: #396E94;
     color: #d9c2a3;
 }
 
 main section{
     text-align: center;  
-    background-color: black;
+    background-color: #396E94;
     color: #d9c2a3;
 }
 
 .book:hover, .join:hover{  
-    background-color: black;
+    background-color:#396E94 ;
     color: #d9c2a3;
 
 }
@@ -106,6 +106,6 @@ footer a{
 
 footer{
 
-    background-color: black;
+    background-color: #396E94;
     color: #d9c2a3;
 }
