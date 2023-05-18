@@ -1,0 +1,23 @@
+body{
+    background-color: aquamarine;
+}
+.sec1{
+    background-color: blue;
+}
+
+main{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    max-width: 500px; 
+}
+
+.john{
+    grid-column:1/3 ;
+    grid-row: 1/2 ;
+    background-color: fuchsia;
+}
+
+footer{
+    grid-column: -1/-1;
+    background-color: aliceblue;
+}
