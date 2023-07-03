@@ -1,3 +1,12 @@
+form{
+    margin: 0 auto;
+    padding: 15px;
+    max-width: 500px;
+    background-color: aqua;
+    filter:drop-shadow(0 0 0.75rem rgba(0,0,0,0.5))
+}
+
+
 #feedback {
     background-color: antiquewhite;
     position: absolute;
@@ -8,6 +17,19 @@
     /* make this element invisible until we are ready for it */
     display: none;      
 }
-.moveDown {
-    margin-top: 3em;
+
+form ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+form ul li{
+display: grid;
+grid-template-columns: 100px 1fr;
+padding: 0;
+margin: 0;
+}
+form ul li.button button{
+    grid-column: 1/3;
 }
