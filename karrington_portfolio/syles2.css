@@ -9,7 +9,7 @@
 }
 
 #background {
-    height: 725px; background-color:#7a459d ;
+    height: 725px; background-color:black ;
 }
 
 body {
@@ -62,7 +62,7 @@ nav a {
 
 .home-title{   
     background-color: white;
-    color: #d9c2a3;
+    color: black;
     font-family: 'Josefin Sans' ;
     font-size: 2em;
     margin-top: 10px;
@@ -129,8 +129,8 @@ hr {
 
 main section{
     text-align: center;  
-    background-color: #396E94;
-    color: #d9c2a3;
+    background-color: yellow;
+    color: black;
 }
 
 
@@ -156,7 +156,7 @@ grid-template-areas: ". . home home . ."
 
 .book:hover, .join:hover{  
     background-color:#396E94 ;
-    color: #d9c2a3;
+    color: black;
     font-family: 'Josefin Sans';
     font-size:18px ;
     padding: 15px 30px;
@@ -287,7 +287,7 @@ footer p a:hover {
 }
 
 footer a{
-    background-color:#e63946;
+    background-color:yellow;
     text-decoration: none;
 
 
@@ -304,7 +304,7 @@ footer a{
     font: size 50px ;
     padding-bottom: 8em;
 }
-.msg{background-color:#457b9d ;
+.msg{background-color:yellow ;
     padding: 35px;
 
 }
@@ -312,7 +312,7 @@ footer a{
 
 footer{
 
-    background-color: #396E94;
+    background-color: yellow;
     color: #d9c2a3;
     margin-top: 200px;
     padding: 25px 50px;

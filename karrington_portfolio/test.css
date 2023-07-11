@@ -1,0 +1,79 @@
+.home-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center; /* Add this line */
+}
+
+body {
+    /* Remove padding: 4em; */
+    padding: 0; /* Add this line */
+    /* Remove text-align: center; */
+}
+
+header {
+    display: grid;
+    grid-template-columns: auto; /* Change to auto */
+    justify-content: center; /* Add this line */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    /* Remove line-height: 3em; */
+    /* Remove text-align: center; */
+}
+
+#hero {
+    display: grid;
+    grid-template-columns: 1fr; /* Change to 1fr */
+    /* Remove grid-template-columns: 1fr 3fr 1fr; */
+}
+
+#hero-box {
+    /* Remove grid-column: 1/4; */
+    /* Remove grid-row: 1/3; */
+    /* Remove z-index: -1; */
+}
+
+#hero-msg {
+    /* Remove grid-column: 2/3; */
+    /* Remove grid-row: 1/2; */
+    /* Remove margin-top: 100px; */
+    margin-top: 0; /* Add this line */
+}
+
+main section{
+    /* Remove background-color: yellow; */
+}
+
+.sitemap {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(6, 15%);
+    grid-template-rows: 3em 1.5em 1.5em 3em;
+    grid-template-areas: ". . home home . ."
+                        ". . . top . ."
+                        ". left left right right ."
+                        "page2 page2 . . page3 page3";
+}
+
+.mountains, .msg {
+    /* Remove grid-column: 1/11; */
+    /* Remove grid-row: 5/8; */
+    /* Remove margin-top: 100px; */
+}
+
+@media screen and (max-width: 900px) {
+    /* Remove #hero, .home-grid display: block; */
+    /* Remove nav, footer flex-direction: column; */
+    /* Remove nav a display: block; */
+    /* Remove #hero, #hero-msg, .home-title, .rivers-card, .camping-card, .rapids-card, #background, .mountains, .msg, footer margin: 0 auto; */
+    /* Remove #hero margin-top: 0; */
+    /* Remove #hero-msg margin-top: 0; */
+    /* Remove #hero-msg h4 display: none; */
+    /* Remove .home-title font-size: 25px; */
+    /* Remove .rivers-card, .camping-card, .rapids-card margin: 50px auto; */
+    /* Remove #background display: none; */
+    /* Remove .mountains, .msg width: 80%; */
+    /* Remove footer margin-top: 25px; */
+}
