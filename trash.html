@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flappy Bird Game</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #70c5ce;
+      }
+
+      canvas {
+        display: block;
+        margin: 0;
+        background: linear-gradient(#70c5ce, #ffffff);
+      }
+
+      #startMessage,
+      #gameOverMessage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 24px;
+        color: #333;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+
+      #playAgainButton {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #playAgainButton:hover {
+        background-color: #0056b3;
+      }
+
+      #playAgainButton:focus {
+        outline: none;
+      }
+
+      #scoreCounter {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 32px;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="startMessage">Press any key to start</div>
+    <div id="gameOverMessage" style="display: none;">
+      Game Over
+      <button id="playAgainButton">Play Again</button>
+    </div>
+    <div id="scoreCounter">0</div>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      const startMessage = document.getElementById("startMessage");
+      const gameOverMessage = document.getElementById("gameOverMessage");
+      const playAgainButton = document.getElementById("playAgainButton");
+      const scoreCounter = document.getElementById("scoreCounter");
+
+      let bird;
+      let pipes = [];
+      let pipeWidth = 40;
+      let pipeGap;
+      let pipeFrequency = 150; // Increased for more spacing between pipes
+      let frames = 0;
+      let isGameOver = false;
+      let gameStarted = false;
+      let pipeSpeed;
+      let speedIncrement = 0.001;
+      let gravityIncrement = 0.00005;
+      let score = 0; // Score counter
+      let animationId; // Store requestAnimationFrame ID for game control
+
+      // Resize the canvas to fill the screen
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        pipeGap = Math.floor(canvas.height / 3); // Dynamically adjust the gap size based on screen height
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+
+      // Initialize or reset the game
+      function initializeGame() {
+        bird = {
+          x: 50,
+          y: canvas.height / 2,
+          width: 30, // Fixed bird width
+          height: 30, // Fixed bird height
+          gravity: 0.05, // Lower gravity for a gliding effect
+          lift: -4,
+          velocity: 0
+        };
+
+        pipes = []; // Clear pipes on game restart
+        frames = 0; // Reset frame count
+        isGameOver = false;
+        gameStarted = false;
+        pipeSpeed = 1.5;
+        score = 0; // Reset score
+        scoreCounter.innerText = score; // Reset score display
+
+        startMessage.style.display = "block";
+        gameOverMessage.style.display = "none";
+        cancelAnimationFrame(animationId); // Ensure animation is stopped when restarting
+      }
+
+      // Draw the bird
+      function drawBird() {
+        ctx.fillStyle = "yellow";
+        ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
+      }
+
+      // Update the bird's position
+      function updateBird() {
+        bird.velocity += bird.gravity;
+        bird.y += bird.velocity;
+
+        // Check if bird hits the ground or ceiling
+        if (bird.y + bird.height > canvas.height || bird.y < 0) {
+          gameOver();
+        }
+      }
+
+      // Draw the pipes
+      function drawPipes() {
+        ctx.fillStyle = "green";
+        pipes.forEach(pipe => {
+          ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+          ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipeWidth, pipe.bottom);
+        });
+      }
+
+      // Update the pipes' position and generate new pipes
+      function updatePipes() {
+        pipes.forEach(pipe => {
+          pipe.x -= pipeSpeed;
+
+          // If the bird passes the pipe, increase the score
+          if (!pipe.scored && pipe.x + pipeWidth < bird.x) {
+            score++;
+            scoreCounter.innerText = score; // Update score display
+            pipe.scored = true; // Mark this pipe as scored
+          }
+        });
+
+        // Generate pipes offscreen and ensure they continue to generate over time
+        if (frames % pipeFrequency === 0) {
+          let topHeight = Math.random() * (canvas.height - pipeGap);
+          let bottomHeight = canvas.height - pipeGap - topHeight;
+          pipes.push({ x: canvas.width, top: topHeight, bottom: bottomHeight, scored: false });
+        }
+
+        pipes = pipes.filter(pipe => pipe.x + pipeWidth > 0); // Remove pipes that have gone offscreen
+      }
+
+      // Check for collisions between the bird and the pipes
+      function checkCollision() {
+        pipes.forEach(pipe => {
+          if (
+            bird.x < pipe.x + pipeWidth &&
+            bird.x + bird.width > pipe.x &&
+            (bird.y < pipe.top || bird.y + bird.height > canvas.height - pipe.bottom)
+          ) {
+            gameOver();
+          }
+        });
+      }
+
+      // Handle game over state
+      function gameOver() {
+        isGameOver = true;
+        gameOverMessage.style.display = "block";
+        cancelAnimationFrame(animationId); // Stop the game loop
+      }
+
+      // Gradually increase difficulty over time
+      function increaseDifficulty() {
+        pipeSpeed += speedIncrement;
+        bird.gravity += gravityIncrement;
+
+        if (pipeFrequency > 60) {
+          pipeFrequency -= 0.1;
+        }
+      }
+
+      // Main game loop
+      function gameLoop() {
+        if (isGameOver || !gameStarted) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        drawBird();
+        updateBird();
+
+        drawPipes();
+        updatePipes();
+
+        checkCollision();
+
+        frames++;
+        if (frames % 500 === 0) {
+          increaseDifficulty();
+        }
+
+        animationId = requestAnimationFrame(gameLoop); // Keep the game running
+      }
+
+      // Start the game after a key press
+      function startGame() {
+        if (!gameStarted) {
+          gameStarted = true;
+          startMessage.style.display = "none";
+          gameLoop();
+        }
+      }
+
+      // Reset the game state and display the start message
+      function playAgain() {
+        initializeGame();
+        startMessage.style.display = "block"; // Show the start message again
+        gameOverMessage.style.display = "none"; // Hide the game over message
+      }
+
+      // Event listeners for keypress and play again button
+      document.addEventListener("keydown", () => {
+        if (!gameStarted && !isGameOver) {
+          startGame();
+        } else if (!isGameOver) {
+          bird.velocity = bird.lift;
+        }
+      });
+
+      playAgainButton.addEventListener("click", () => {
+        playAgain();
+      });
+
+      // Initialize the game on page load
+      resizeCanvas();
+      initializeGame();
+    </script>
+  </body>
+</html>
